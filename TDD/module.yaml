@@ -1,0 +1,13 @@
+product: jvm/app
+
+dependencies:
+  - $kotlin.test
+
+settings:
+  kotlin:
+    version: 2.4.20
+    freeCompilerArgs:
+      - -Xcollection-literals
+      #      - -Xname-based-destructuring=complete
+      - -Xreturn-value-checker=full
+    optIns: [ kotlin.test.ExperimentalKotlinTestApi ]
