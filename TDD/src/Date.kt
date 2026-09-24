@@ -1,6 +1,13 @@
+private const val GREGORIAN_START = 1582
+private const val MAX_YEAR = 2200
 
-
-class Date(val year: Int, val month: Int = 1, val day: Int = 1)
+class Date(val year: Int, val month: Int = 1, val day: Int = 1) {
+    init {
+        require(year in GREGORIAN_START..MAX_YEAR) { "Invalid year" }
+        require(month in 1..daysOfMonths.size) { "Invalid month" }
+        require(day in 1..lastDayOfMonth) { "Invalid day" }
+    }
+}
 
 val Int.isLeapYear: Boolean
     get() = this % 4 == 0 && (this % 100 != 0 || this % 400 == 0)
