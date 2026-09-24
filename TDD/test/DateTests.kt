@@ -1,6 +1,12 @@
 import kotlin.test.*
 
 class DateTests {
+    @Test fun `compare dates`() {
+        // a == b -> a.equals(b)
+        val sut = Date(2026, 9, 21)
+        val sut2 = Date(2026, 9, 21)
+        assertEquals(sut, sut2)
+    }
     @Test fun `Add days to a date`() {
         // a + b --> a.plus(b)
         val sut = Date(2026, 9, 21) + 2
