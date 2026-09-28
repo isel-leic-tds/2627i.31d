@@ -1,17 +1,27 @@
 private const val GREGORIAN_START = 1582
 private const val MAX_YEAR = 2200
 
-class Date(val year: Int, val month: Int = 1, val day: Int = 1) {
+private const val YEAR_BITS = 12
+private const val MONTH_BITS = 4
+private const val DAY_BITS = 5
+
+value class Date private constructor(private val bits: Int) {
+    constructor(year: Int, month: Int = 1, day: Int = 1)
+      : this((year shl (MONTH_BITS+DAY_BITS)) or (month shl DAY_BITS) or day)
     init {
         require(year in GREGORIAN_START..MAX_YEAR) { "Invalid year" }
         require(month in 1..daysOfMonths.size) { "Invalid month" }
         require(day in 1..lastDayOfMonth) { "Invalid day" }
     }
-    override fun equals(other: Any?): Boolean =
-        other is Date && year==other.year && month==other.month && day==other.day
 
-    override fun hashCode(): Int =
-        year shl 9 or month shl 5 or day
+    val year: Int get() = bits shr (MONTH_BITS+DAY_BITS)
+    val month: Int get() = (bits shr DAY_BITS) and ((1 shl MONTH_BITS) - 1)
+    val day: Int get() = bits and ((1 shl DAY_BITS) - 1)
+
+    override fun toString(): String =
+        "%04d-%02d-%02d".format(year,month, day)
+
+    operator fun compareTo(dt: Date): Int = bits - dt.bits
 }
 
 val Int.isLeapYear: Boolean
@@ -45,8 +55,3 @@ tailrec fun Date.addDays(days: Int): Date {
 operator fun Date.plus(days: Int): Date = this.addDays(days)
 operator fun Int.plus(date: Date): Date = date.addDays(this)
 
-operator fun Date.compareTo(dt: Date): Int = when {
-    year != dt.year -> year - dt.year
-    month != dt.month -> month - dt.month
-    else -> day - dt.day
-}

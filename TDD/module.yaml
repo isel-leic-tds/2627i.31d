@@ -9,5 +9,6 @@ settings:
     freeCompilerArgs:
       - -Xcollection-literals
       - -Xreturn-value-checker=full
+      - -XXLanguage:+FullValueClasses
     optIns:
       - kotlin.test.ExperimentalKotlinTestApi
