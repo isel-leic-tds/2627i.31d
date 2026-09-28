@@ -28,7 +28,7 @@ val Date.lastDayOfMonth: Int
 /**
  * Add days to a date.
  * @param days number of days to add
- * @return new date
+ * @return new date after adding days
  */
 tailrec fun Date.addDays(days: Int): Date {
     require(days > 0) { "days must be positive" }
@@ -45,4 +45,8 @@ tailrec fun Date.addDays(days: Int): Date {
 operator fun Date.plus(days: Int): Date = this.addDays(days)
 operator fun Int.plus(date: Date): Date = date.addDays(this)
 
-
+operator fun Date.compareTo(dt: Date): Int = when {
+    year != dt.year -> year - dt.year
+    month != dt.month -> month - dt.month
+    else -> day - dt.day
+}
