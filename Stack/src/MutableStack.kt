@@ -4,4 +4,8 @@ class MutableStack<T> {
     fun pop(): T = top.also { items.removeLast() }
     fun isEmpty(): Boolean = items.isEmpty()
     val top: T get() = items.last()
+
+    override fun equals(other: Any?) =
+        other is MutableStack<*> && items == other.items
+    override fun hashCode() = items.hashCode()
 }
