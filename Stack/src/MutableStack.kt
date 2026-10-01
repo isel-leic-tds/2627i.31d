@@ -9,18 +9,17 @@ class MutableStack<T> {
     fun isEmpty(): Boolean = head == null
     val top: T get() = first.elem
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is MutableStack<*>) return false
-        var n1 = head
-        var n2 = other.head
-        while (n1 != null && n2 != null) {
-            if (n1.elem != n2.elem) return false
-            n1 = n1.next
-            n2 = n2.next
+    override fun equals(other: Any?) =
+        other is MutableStack<*> && equalsNodes(head, other.head)
+
+    private tailrec fun equalsNodes(n1: Node<T>?, n2: Node<*>?) : Boolean =
+        when {
+            n1 == null && n2 == null -> true
+            n1 == null || n2 == null -> false
+            n1.elem != n2.elem -> false
+            else -> equalsNodes(n1.next, n2.next)
         }
-        return n1 == null && n2 == null
-    }
+
     override fun hashCode() : Int {
         var result = 0
         var n = head

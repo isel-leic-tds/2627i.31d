@@ -8,4 +8,7 @@ fun main() {
     println(stk.top)  // -> B
     while(!stk.isEmpty())
         println(stk.pop()) // -> B,A
+
+
+
 }
