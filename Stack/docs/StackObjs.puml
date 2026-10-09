@@ -1,0 +1,28 @@
+@startuml
+'https://plantuml.com/object-diagram
+
+hide empty members
+
+circle "empty" as empty
+
+object "Stack<Char>" as s1
+empty -> s1
+
+circle "one" as one
+object "Stack<Char>" as s2
+one -> s2
+object "Node<Char>" as n2
+n2 : value = 'X'
+s2 o-> n2 : head
+
+empty -[hidden]- one
+
+circle "two" as two
+object "Stack<Char>" as s3
+two -> s3
+object "Node<Char>" as n3
+n3 : value = 'Y'
+s3 o-> n3 : head
+
+n3 o-up-> n2 : next
+@enduml
