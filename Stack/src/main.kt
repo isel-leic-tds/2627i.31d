@@ -12,9 +12,9 @@ fun main() {
     val empty = Stack<Char>()
     val one = empty.push('X')
     val two = one.push('Y')
-    val e = two.top
-    val other = two.pop()
-    val (other2, top) = two.pop2()
+    //val e = two.top
+    //val other = two.pop()
+    //val (other2, top) = two.pop2()
     println(one.top)
     println(two.top)
 }
