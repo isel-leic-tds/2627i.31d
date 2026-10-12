@@ -18,4 +18,15 @@ class Stack<T> private constructor(private val head: Node<T>?): Iterable<T> {
             (n ?: throw NoSuchElementException("no more elements"))
                 .also { n = it.next }.value
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is Stack<*>) return false
+        val i = other.iterator()
+        for(e in this)
+            if (! i.hasNext() || e != i.next()) return false
+        return !i.hasNext()
+    }
+
+    override fun hashCode() =
+        this.fold(0){ res, e -> res * 31 + e.hashCode() }
 }

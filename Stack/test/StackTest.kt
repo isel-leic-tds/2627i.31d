@@ -30,4 +30,12 @@ class StackTest {
         //    action(e)
         // }
     }
+    @Test fun `verify equality between Stacks`() {
+        val s1 = Stack<Int>().push(1).push(2)
+        val s2 = Stack<Int>().push(1).push(2)
+        assertEquals(s1,s2)
+        assertEquals(s1.hashCode(),s2.hashCode())
+        assertNotEquals(s1.pop(),s2)
+        assertNotEquals(s1,s2.pop())
+    }
 }
