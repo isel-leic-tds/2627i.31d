@@ -1,0 +1,30 @@
+@startuml
+'https://plantuml.com/object-diagram
+
+hide empty members
+
+circle "empty" as empty
+
+object "StackEmpty" as se
+empty -> se
+
+circle "one" as one
+object "StackNotEmpty<Char>" as s1
+one -> s1
+s1 : top = 'X'
+se <--o s1 : tail
+
+circle "two" as two
+object "StackNotEmpty<Char>" as s2
+two -> s2
+s2 : top = 'Y'
+s1 <--o s2 : tail
+
+note as code
+      <code>
+      val empty = Stack<Char>()
+      val one = empty.push('X')
+      val two = one.push('Y')
+      </code>
+end note
+@enduml
