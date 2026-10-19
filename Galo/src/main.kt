@@ -1,20 +1,19 @@
-import console.show
+import console.*
 import model.*
 
 fun main() {
     var game: Game? = null
+    val cmds: Map<String,Command> = getCommands()
     while (true) {
-        print("> ")
-        val cmd = readln().trim().uppercase().split(' ').filter(String::isNotEmpty)
-        when( cmd[0] ) {
-            "NEW" -> game = game?.new() ?: Game()
-            "EXIT" -> break
-            "PLAY" -> if (game!=null) {
-                val pos = cmd[1].toInt()
-                if (game.canPlay(pos))
-                    game = game.play(pos)
-            }
+        val (name,args) = readCommand()
+        val cmd = cmds[name]
+        if (cmd==null) println("Invalid command $name")
+        else try {
+            game = cmd.execute(args, game)
+            if (cmd.isTerminate) break
+            game?.show()
+        } catch (e: IllegalArgumentException) {
+            println("${e.message}. Use: $name ${cmd.syntax}")
         }
-        game?.show()
-    }
+     }
 }
