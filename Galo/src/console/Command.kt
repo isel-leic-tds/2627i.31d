@@ -1,12 +1,27 @@
 package console
 
-import model.Game
+import model.*
 
-data class Command(
+open class Command(
     val syntax: String = "",
     val isTerminate: Boolean = false
 ) {
-    fun execute(args: List<String>, g: Game?): Game? = TODO()
+    open fun execute(args: List<String>, g: Game?): Game? = g
 }
 
-fun getCommands(): Map<String, Command> = TODO()
+object Play : Command("<position>") {
+    override fun execute(args: List<String>, g: Game?) : Game {
+        val pos = requireNotNull(args.firstOrNull()) { "Missing position" }
+        val position = requireNotNull(pos.toIntOrNull()) { "Invalid position $pos"}
+        checkNotNull(g) { "No game" }
+        return g.play(position)
+    }
+}
+
+fun getCommands(): Map<String, Command> = mapOf(
+    "EXIT" to Command(isTerminate =  true),
+    "NEW" to object : Command() {
+        override fun execute(args: List<String>, g: Game?) = g?.new() ?: Game()
+    },
+    "PLAY" to Play
+)

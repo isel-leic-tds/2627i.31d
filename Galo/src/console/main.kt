@@ -1,4 +1,5 @@
-import console.*
+package console
+
 import model.*
 
 fun main() {
@@ -14,6 +15,8 @@ fun main() {
             game?.show()
         } catch (e: IllegalArgumentException) {
             println("${e.message}. Use: $name ${cmd.syntax}")
+        } catch (e: IllegalStateException) {
+            println(e.message)
         }
      }
 }

@@ -1,5 +1,6 @@
 package model
 
+const val BOARD_SIZE = 3
 const val EMPTY = ' '
 
 data class Game(
@@ -16,12 +17,16 @@ fun Game.new() = Game(first = first.other)
 
 fun Game.canPlay(p: Int) = board[p] == EMPTY
 
-fun Game.play(p: Int) = Game(
-    turn = turn.other,
-    board = board.mapIndexed { idx, player ->
-        if (idx==p) turn else player
-    }
-)
+fun Game.play(p: Int): Game {
+    require(p in board.indices) { "position $p out of range" }
+    check(canPlay(p)) { "position $p already taken" }
+    return Game(
+        turn = turn.other,
+        board = board.mapIndexed { idx, player ->
+            if (idx == p) turn else player
+        }
+    )
+}
 
 fun Game.isWinner(player: Char) =
     (0..8 step 4).all{ board[it]==player } ||
