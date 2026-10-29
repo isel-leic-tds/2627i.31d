@@ -26,9 +26,13 @@ fun Game.play(p: Position): Game {
     )
 }
 
-fun Game.isWinner(player: Player) =
-    (0..8 step 4).all{ board[it]==player } ||
-    (2..6 step 2).all{ board[it]==player } ||
-    (0..2).any{ col -> (0..6 step 3).all{ board[col+it]==player } } ||
-    (0..6 step 3).any{ lin -> (0..2).all{ board[lin+it]==player} }
+fun Game.isWinner(player: Player): Boolean {
+    val places = Position.all.filter{ board[it.index]==player }
+    if (places.size < BOARD_SIZE) return false
+    val counts =
+        List(BOARD_SIZE){ col-> places.count{ it.col == col}} +
+        List(BOARD_SIZE){ row -> places.count{ it.row == row}} +
+        places.count{ it.slash } + places.count{ it.backSlash }
+    return counts.any{ it == BOARD_SIZE }
+}
 

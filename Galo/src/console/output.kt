@@ -12,8 +12,8 @@ fun Game.show() {
     }
     // Print status
     val status = when {
-        isWinner(Player.X) -> "Winner X"
-        isWinner(Player.O) -> "Winner O"
+        isWinner(Player.X) -> "Winner ${Player.X.toChar()}"
+        isWinner(Player.O) -> "Winner ${Player.O.toChar()}"
         board.all{ it != EMPTY } -> "Draw"
         else -> "Turn: $turn"
     }
