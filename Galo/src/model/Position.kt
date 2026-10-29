@@ -12,6 +12,7 @@ class Position private constructor(val index: Int) {
             return all[i]
         }
     }
+    override fun toString() = "($index)"
 }
 
 fun Int.isValidPosition(): Boolean = this in 0..<BOARD_DIM

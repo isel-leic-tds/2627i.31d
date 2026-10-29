@@ -6,16 +6,15 @@ val separator = "---" + "+---".repeat(BOARD_SIZE-1)
 
 fun Game.show() {
     // Print board
-    board.chunked(BOARD_SIZE).forEachIndexed { idx, row ->
-        println( row.joinToString(" | ", prefix = " "){ it.toChar().toString() })
+    Position.all.chunked(BOARD_SIZE).forEachIndexed { idx, row ->
+        println( row.joinToString(" | ", prefix = " "){ board[it].toChar().toString() })
         if (idx!=BOARD_SIZE-1) println(separator)
     }
     // Print status
-    val status = when {
-        isWinner(Player.X) -> "Winner ${Player.X.toChar()}"
-        isWinner(Player.O) -> "Winner ${Player.O.toChar()}"
-        board.all{ it != EMPTY } -> "Draw"
-        else -> "Turn: $turn"
+    val status = when(state) {
+        is Win -> "Winner ${state.winner.toChar()}"
+        is Draw -> "Draw"
+        is Run -> "Turn: ${state.turn}"
     }
     println(status)
 }

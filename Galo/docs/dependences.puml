@@ -1,0 +1,23 @@
+@startuml
+skinparam componentStyle rectangle
+
+package model {
+  [Game.kt] ..> [Player.kt]
+  [Game.kt] ..> [Position.kt]
+}
+
+package console {
+  [Input.kt]
+  [Command.kt] .> [Output.kt]
+  [Main.kt] ..> [Command.kt]
+  [Main.kt] ..> [Input.kt]
+  [Main.kt] .> [Output.kt]
+}
+
+[Main.kt] -> [Game.kt]
+[Command.kt] -up-> [Game.kt]
+[Output.kt] -> [Game.kt]
+[Output.kt] -> [Position.kt]
+
+@enduml
+

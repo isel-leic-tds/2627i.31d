@@ -1,0 +1,18 @@
+@startuml
+
+state Run : turn : Player
+state Play <<choice>>
+state Win : winner : Player
+state Draw
+
+[*] -> Run : new()
+Run --> Play : play()
+Play -left-> Win : [winner]
+Play -> Draw : [draw]
+Play -up-> Run : [else]
+Win -up-> Run: new()
+Draw -up-> Run: new()
+Run -> Run: new()
+
+@enduml
+
