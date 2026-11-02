@@ -25,6 +25,7 @@ class GameTest {
     private fun playMoves(vararg moves:Int): Game =
         moves.fold(Game()) { g, pos -> g.play(Position(pos)) }
     @Test fun winDetection() {
+        @Suppress("KotlinConstantConditions")
         if (BOARD_SIZE != 3) return
         // O X - | O X - | - X -
         val game = playMoves(1,0,4,3,7)  // X wins
@@ -32,6 +33,7 @@ class GameTest {
         assertEquals(Player.X, game.state.winner)
     }
     @Test fun drawDetection() {
+        @Suppress("KotlinConstantConditions")
         if (BOARD_SIZE != 3) return
         // X O X | X O O | O X X
         val game = playMoves(0,1,2,4,3,5,7,6,8)
@@ -47,6 +49,7 @@ class GameTest {
         assertTrue(newGame.state is Run)
     }
     @Test fun tryToPlayAfterWinThrows() {
+        @Suppress("KotlinConstantConditions")
         if (BOARD_SIZE != 3) return
         val game = playMoves(1,0,4,3,7) // X wins
         assertTrue(game.state is Win)
