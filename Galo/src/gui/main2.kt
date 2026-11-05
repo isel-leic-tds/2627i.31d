@@ -25,7 +25,7 @@ private fun App() {
     var player by remember { mutableStateOf(Player.O) }
     MaterialTheme {
         Column (horizontalAlignment = Alignment.CenterHorizontally) {
-            PlayerView(player, modifier = Modifier.size(200.dp))
+            Cell(player, modifier = Modifier.size(200.dp))
             Button(onClick = {
                 player = player.other
             }) { Text("Other") }
