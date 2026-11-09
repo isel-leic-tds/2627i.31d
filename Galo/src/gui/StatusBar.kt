@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.*
+import androidx.compose.ui.unit.dp
 import model.*
 
 @Composable
@@ -18,5 +19,5 @@ fun StatusBar(state: GameState) = Row(
         is Draw -> "Draw" to null
     }
     Text(text, style = MaterialTheme.typography.displayMedium)
-    if (player!=null) Cell(player, modifier = Modifier.size(CELL_SIDE/4))
+    if (player!=null) Cell(player, modifier = Modifier.size(40.dp))
 }

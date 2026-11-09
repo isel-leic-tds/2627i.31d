@@ -1,6 +1,13 @@
 package console
 
-import model.*
+import model.BOARD_SIZE
+import model.Draw
+import model.Game
+import model.Player
+import model.Position
+import model.Run
+import model.Score
+import model.Win
 
 val separator = "---" + "+---".repeat(BOARD_SIZE-1)
 
@@ -17,6 +24,15 @@ fun Game.show() {
         is Run -> "Turn: ${state.turn}"
     }
     println(status)
+}
+
+fun Score.show() {
+    println(
+        Player.entries.joinToString(" ") {
+            "${it.toChar()}=${getValue(it)}"
+        }
+        + " Draws=${getValue(null)}"
+    )
 }
 
 fun Player?.toChar() = when(this) {

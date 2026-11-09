@@ -14,7 +14,7 @@ import galo.generated.resources.cross
 import model.*
 import org.jetbrains.compose.resources.painterResource
 
-val CELL_SIDE = 200.dp
+val CELL_SIDE = 120.dp
 val LINE_THICKNESS = 6.dp
 val BOARD_SIDE = CELL_SIDE * BOARD_SIZE + LINE_THICKNESS * (BOARD_SIZE-1)
 
