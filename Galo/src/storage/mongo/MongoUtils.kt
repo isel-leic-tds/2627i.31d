@@ -32,6 +32,7 @@ inline fun <reified T: Any> MongoDriver.getCollection(id: String) =
 inline fun <reified T: Any> MongoDriver.getAllCollections() =
     db.listCollectionNames().toList().map { getCollection<T>(it) }
 
+
 fun <T: Any> Collection<T>.getAllDocuments(): List<T> =
     collection.find().toList()
 
