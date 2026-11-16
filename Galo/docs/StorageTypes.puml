@@ -1,0 +1,28 @@
+@startuml
+
+hide empty members
+
+interface Storage<Key,Data> {
+  create(:Key, :Data)
+  read(:Key) :Data?
+  update(:Key, :Data)
+  delete(:Key)
+}
+
+interface Serializer<Data> {
+  serialize(:Data) :String
+  deserialize(:String) :Data
+}
+
+class TextFileStorage<Key,Data> {
+  baseDirectory: String
+  create(:Key, :Data)
+  read(:Key) :Data?
+  update(:Key, :Data)
+  delete(:Key)
+}
+
+Storage <|.. TextFileStorage
+Serializer <-- TextFileStorage : serializer
+
+@enduml

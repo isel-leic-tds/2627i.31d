@@ -7,3 +7,6 @@ val Player.other get() = if(this==X) O else X
 
 fun String.toPlayer() =
     Player.entries.first { it.name==this }
+
+fun String.toPlayerOrNull() =
+    Player.entries.firstOrNull { it.name==this }

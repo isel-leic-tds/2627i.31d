@@ -43,7 +43,7 @@ object GameSerializer: Serializer<Game> {
             score = l4.split(' ')
                 .map{ it.split('=') }
                 .associate { [player, score] ->
-                    player.toPlayer() to score.toInt()
+                    player.toPlayerOrNull() to score.toInt()
                 }
         ) }
 }

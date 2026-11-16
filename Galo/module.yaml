@@ -13,4 +13,5 @@ dependencies:
   - $compose.desktop.currentOs
   - $compose.material3
   - com.squareup.okio:okio:3.18.2
- 
+  - org.apache.logging.log4j:log4j-slf4j-impl:2.26.1
+  - org.mongodb:mongodb-driver-kotlin-sync:5.13.0

@@ -1,0 +1,38 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+hide empty members
+
+package storage {
+  interface Storage<Key,Data>
+  class TextFileStorage<Key,Data>
+  interface Serializer<Data>
+}
+
+Storage <|.. TextFileStorage
+Serializer <-- TextFileStorage
+
+package model {
+  class Game {
+    board
+    first
+    score
+  }
+  Game o--> GameState : state
+  class GameStateSerializer <<(O,orange)>> {
+    serialize(:GameState): String
+    deserialize(:String): GameState
+  }
+  class GameSerializer <<(O,orange)>> {
+    serialize(:Game): String
+    deserialize(:String): Game
+  }
+}
+
+  Serializer <|.... GameStateSerializer : Data=GameState
+  GameStateSerializer .> GameState
+  Serializer <|... GameSerializer : Data=Game
+  GameSerializer .> Game
+  GameSerializer ..> GameStateSerializer : <<use>>
+
+@enduml

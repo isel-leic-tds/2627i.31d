@@ -16,15 +16,22 @@ val Play = Command("<position>") { args, g ->
     g.play(p)
 }
 
-fun getCommands(gs: Storage<String,Game>): Map<String, Command> = mapOf(
+typealias GameStorage = Storage<Name, Game>
+
+fun getCommands(gs: GameStorage): Map<String, Command> = mapOf(
     "EXIT" to Command(isTerminate =  true),
     "NEW" to Command { _, g -> g?.new() ?: Game() },
     "PLAY" to Play,
     "SCORE" to Command { _, g -> g?.also{ it.score.show() } },
-    "SAVE" to Command("<filename>") { args, g ->
-        checkNotNull(g) { "No game" }
-        val filename = requireNotNull(args.firstOrNull()) { "Missing filename" }
-        gs.create(filename, g)  // Save the game state to storage
-        g
+    "SAVE" to storageCommand { name, g ->
+        g.also{ gs.create(name, checkNotNull(g) { "No game" } ) }
     },
+    "LOAD" to storageCommand { name, _ ->
+        requireNotNull(gs.read(name)) { "No game named $name" }
+    }
 )
+
+fun storageCommand(oper: (Name, Game?) -> Game?) = Command("<name>") { args, g ->
+    val arg = requireNotNull(args.firstOrNull()) { "Missing name" }
+    oper(Name(arg),g)
+}

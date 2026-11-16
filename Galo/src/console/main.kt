@@ -5,7 +5,7 @@ import storage.TextFileStorage
 
 fun main() {
     var game: Game? = null
-    val gs = TextFileStorage<String,Game>("games", GameSerializer)
+    val gs: GameStorage = TextFileStorage("games", GameSerializer)
     val cmds: Map<String,Command> = getCommands(gs)
     while (true) {
         val (name, args) = readCommand()
