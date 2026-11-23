@@ -1,7 +1,6 @@
 package console
 
 import model.*
-import storage.Storage
 
 class Command(
     val syntax: String = "",
@@ -15,8 +14,6 @@ val Play = Command("<position>") { args, g ->
     checkNotNull(g) { "No game" }
     g.play(p)
 }
-
-typealias GameStorage = Storage<Name, Game>
 
 fun getCommands(gs: GameStorage): Map<String, Command> = mapOf(
     "EXIT" to Command(isTerminate =  true),

@@ -22,10 +22,12 @@ fun main() = application {
 
 @Composable
 private fun FrameWindowScope.App(onExit: () -> Unit) {
-    val vm = remember { ViewModel() }
+    val vm = remember { TextFileViewModel() }
     MenuBar {
         Menu("Game") {
-            Item("New", onClick = vm::newGame)
+            Item("Start game", onClick = vm::start)
+            Item("Join game", onClick = vm::join)
+            Item("New board", onClick = vm::newBoard)
             Item("Score", onClick = vm::showScore)
             Item("Exit", onClick = onExit)
         }
@@ -36,5 +38,6 @@ private fun FrameWindowScope.App(onExit: () -> Unit) {
             StatusBar(vm.game.state)
         }
         if (vm.showScore) ScoreInfo(vm.game.score, onClose = vm::hideScore)
+        vm.editNameFor?.let { EditName(it, onCancel = vm::cancelEdit, onAction = vm::action) }
     }
 }
