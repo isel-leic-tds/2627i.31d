@@ -16,31 +16,40 @@ class ClashRun(
 fun Clash.start(name: Name) =
     ClashRun(gs, name, Player.X, Game()).also {
         gs.create(name, it.game)
+        deleteIfOwner()
     }
 
 fun Clash.join(name: Name) =
-    gs.read(name)?.let{ ClashRun(gs, name, Player.O, it) }
-        ?: error("game $name not found")
+    gs.read(name)?.let{
+        deleteIfOwner()
+        ClashRun(gs, name, Player.O, it)
+    } ?: error("game $name not found")
 
-fun ClashRun.refresh() =
-    ClashRun(gs, name, side, gs.read(name) ?: error("game $name disappear"))
-
-fun ClashRun.deleteIfOwner() {
-    if (side == Player.X) gs.delete(name)
+fun Clash.exec(fx: ClashRun.()-> Game): ClashRun {
+    check(this is ClashRun) { "Clash not started" }
+    return ClashRun(gs, name, side, fx() )
 }
 
-fun ClashRun.play(p: Position): ClashRun {
-    val g = game.play(p)
-    check(side == (game.state as Run).turn){ "Not your turn" }
-    return ClashRun(gs, name, side, g)
+fun Clash.refresh() = exec {
+    gs.read(name) ?: error("game $name disappear")
 }
 
-val ClashRun.canNew get() = side == when(game.state) {
+fun Clash.deleteIfOwner() {
+    if (this is ClashRun && side == Player.X) gs.delete(name)
+}
+
+fun Clash.play(p: Position) = exec {
+    game.play(p).also {
+        check(side == (game.state as Run).turn){ "Not your turn" }
+    }
+}
+
+val Clash.canNew get() = this is ClashRun && side == when(game.state) {
     is Run -> game.state.turn
     else -> game.first.other
 }
 
-fun ClashRun.newBoard(): ClashRun {
+fun Clash.newBoard() = exec {
     check(canNew){ "cant new" }
-    return ClashRun(gs, name, side, game.new())
+    game.new()
 }

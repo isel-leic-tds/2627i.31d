@@ -12,7 +12,7 @@ import org.jetbrains.compose.resources.painterResource
 
 fun main() = application {
     Window(
-        onCloseRequest = ::exitApplication,
+        onCloseRequest = { },
         icon = painterResource(Res.drawable.circle),
         state = WindowState(size= DpSize(400.dp,485.dp))
     ) {
@@ -27,17 +27,21 @@ private fun FrameWindowScope.App(onExit: () -> Unit) {
         Menu("Game") {
             Item("Start game", onClick = vm::start)
             Item("Join game", onClick = vm::join)
-            Item("New board", onClick = vm::newBoard)
+            //Item("Refresh", onClick = vm::refresh)
+            //Item("New board", onClick = vm::newBoard)
             Item("Score", onClick = vm::showScore)
-            Item("Exit", onClick = onExit)
+            Item("Exit", onClick = { vm.exit(); onExit() })
         }
     }
     MaterialTheme {
         Column {
-            Board(vm.game.board, onClick = vm::play )
-            StatusBar(vm.game.state)
+            //Board(vm.game.board, onClick = vm::play )
+            //StatusBar(vm.game.state)
         }
-        if (vm.showScore) ScoreInfo(vm.game.score, onClose = vm::hideScore)
-        vm.editNameFor?.let { EditName(it, onCancel = vm::cancelEdit, onAction = vm::action) }
+        //if (vm.showScore) ScoreInfo(vm.game.score, onClose = vm::hideScore)
+        vm.editNameFor?.let {
+            EditName(it, onCancel = vm::cancelEdit, onAction = vm::action)
+        }
+        vm.errorMessage?.let { ErrorMessage(it, onOk= vm::hideError) }
     }
 }

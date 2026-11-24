@@ -12,25 +12,37 @@ open class ViewModel(gs: GameStorage){
     var clash by mutableStateOf(Clash(gs))
     private set
 
-    var editNameFor: EditFor? = null
+    fun exit() { clash.deleteIfOwner() }
+
+    var editNameFor by mutableStateOf<EditFor?>(null)
     private set
     fun start() { editNameFor = EditFor.START }
     fun join() { editNameFor = EditFor.START }
     fun cancelEdit() { editNameFor = null }
-    fun action(name: Name, to: EditFor) {
-        clash = when (to) {
-            EditFor.START -> clash.start(name)
-            EditFor.JOIN -> clash.join(name)
+    fun action(name: Name) {
+        try {
+            clash = when (editNameFor as EditFor) {
+                EditFor.START -> clash.start(name)
+                EditFor.JOIN -> clash.join(name)
+            }
+            editNameFor = null
+        } catch(e: IllegalStateException) {
+            errorMessage = e.message
         }
-        editNameFor = null
     }
 
+    var errorMessage by mutableStateOf<String?>(null)
+    private set
+    fun hideError() { errorMessage = null }
+
+/*
     fun play(pos: Position) {
         if (clash.state is Run) game = game.play(pos)
     }
     fun newBoard() {
         if (!showScore) game = game.new()
     }
+*/
 
     var showScore by mutableStateOf(false)
     private set
@@ -38,8 +50,10 @@ open class ViewModel(gs: GameStorage){
     fun showScore() { showScore = true }
 }
 
+const val baseName = "games"
+
 class TextFileViewModel
-    : ViewModel(TextFileStorage("game", GameSerializer))
+    : ViewModel(TextFileStorage(baseName, GameSerializer))
 
 class MongoViewModel(driver: MongoDriver)
-    :ViewModel(MongoStorage("games", driver ,GameSerializer))
+    :ViewModel(MongoStorage(baseName, driver ,GameSerializer))
