@@ -31,7 +31,10 @@ fun Clash.exec(fx: ClashRun.()-> Game): ClashRun {
 }
 
 fun Clash.refresh() = exec {
-    gs.read(name) ?: error("game $name disappear")
+    gs.read(name).also {
+        check(it!=game){ "No changes" }
+    } ?: error("game $name disappear")
+
 }
 
 fun Clash.deleteIfOwner() {
@@ -41,6 +44,7 @@ fun Clash.deleteIfOwner() {
 fun Clash.play(p: Position) = exec {
     game.play(p).also {
         check(side == (game.state as Run).turn){ "Not your turn" }
+        gs.update(name, it)
     }
 }
 
@@ -51,5 +55,5 @@ val Clash.canNew get() = this is ClashRun && side == when(game.state) {
 
 fun Clash.newBoard() = exec {
     check(canNew){ "cant new" }
-    game.new()
+    game.new().also { gs.update(name, it) }
 }
